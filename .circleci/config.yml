@@ -2,12 +2,21 @@ version: 2.1
 
 jobs:
 
+
+  release:
+    docker:
+      - image: "alpine:latest"
+    steps:
+      - run:
+          command: exit 0
+
   job_required_for_mergify:
     docker:
       - image: "alpine:latest"
     steps:
       - run:
           command: exit 0
+          
   release_check:
     docker:
       - image: "alpine:latest"
@@ -35,3 +44,10 @@ workflows:
             branches:
               ignore:
                 - main
+      - release:
+          requires:
+            - release
+          filters:
+            branches:
+              only: main
+
