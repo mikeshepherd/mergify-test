@@ -9,7 +9,8 @@ jobs:
       - run:
           command: exit 0
   release_check:
-    <<: *default_machine
+    docker:
+      - image: "alpine:latest"
     steps:
       - checkout
       - run:
