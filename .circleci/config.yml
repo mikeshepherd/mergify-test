@@ -19,7 +19,7 @@ jobs:
           
   release_check:
     docker:
-      - image: "alpine:latest"
+      - image: "cimg/base"
     steps:
       - checkout
       - run:
