@@ -1,0 +1,36 @@
+version: 2.1
+
+jobs:
+
+  job_required_for_mergify:
+    docker:
+      - image: "alpine:latest"
+    steps:
+      - run:
+          command: exit 0
+  release_check:
+    <<: *default_machine
+    steps:
+      - checkout
+      - run:
+          name: Check most recent main is released
+          command: |
+            [[ $(git log -1 main --pretty=%B) =~ ^.*Released$ ]]
+
+  
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - release_check:
+          filters:
+            branches:
+              ignore:
+                - main
+      - job_required_for_mergify:
+          requires:
+            - release_check
+          filters:
+            branches:
+              ignore:
+                - main
